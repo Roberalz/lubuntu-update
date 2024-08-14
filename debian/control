@@ -5,8 +5,8 @@ Maintainer: Lubuntu Developers <lubuntu-devel@lists.ubuntu.com>
 Build-Depends: cmake,
                debhelper-compat (= 13),
                lxqt-sudo (>= 1.4.0-0ubuntu2),
-               qtbase5-dev,
-               qttools5-dev
+               qt6-base-dev,
+               qt6-tools-dev
 Standards-Version: 4.6.2
 Rules-Requires-Root: no
 

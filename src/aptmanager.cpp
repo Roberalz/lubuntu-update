@@ -88,10 +88,10 @@ void AptManager::handleUpdateProcessBuffer()
         // yes, this gave me a headache also
         if (dlLineMatch.hasMatch()) { // Increments the progress counter for each package downloaded
             internalUpdateProgress++;
-        } else if (line.count() >= 25 && line.left(24) == "Preparing to unpack .../" && numPackagesToPrep != 0) {
+        } else if (line.length() >= 25 && line.left(24) == "Preparing to unpack .../" && numPackagesToPrep != 0) {
             internalUpdateProgress++; // Increments the progress counter for each package that is "prepared to unpack"
             numPackagesToPrep--;
-        } else if (line.count() >= 10 && line.left(9) == "Unpacking") {
+        } else if (line.length() >= 10 && line.left(9) == "Unpacking") {
             /*
              * Increments the progress counter for each package that is unpacked
              * The package name may be suffixed with ":amd64" or some other
@@ -109,7 +109,7 @@ void AptManager::handleUpdateProcessBuffer()
                     internalUpdateProgress++;
                 }
             }
-        } else if (line.count() >= 11 && line.left(10) == "Setting up") {
+        } else if (line.length() >= 11 && line.left(10) == "Setting up") {
             QStringList parts = line.split(' ');
             QString packageName;
             if (parts.count() >= 3) {
@@ -118,7 +118,7 @@ void AptManager::handleUpdateProcessBuffer()
                     internalUpdateProgress++;
                 }
             }
-        } else if (line.count() >= 9 && line.left(8) == "Removing") {
+        } else if (line.length() >= 9 && line.left(8) == "Removing") {
             QStringList parts = line.split(' ');
             QString packageName;
             if (parts.count() >= 2) {
@@ -136,7 +136,7 @@ void AptManager::handleUpdateProcessBuffer()
                 }
                 aptProcess->readLine(lineBuf, 2048);
                 QString confLine = QString(lineBuf);
-                confLine = confLine.left(confLine.count() - 2);
+                confLine = confLine.left(confLine.length() - 2);
                 if (confLine == "Lubuntu Update !!! CONFIGURATION FILE LIST END") {
                     emit conffileListReady(conffileList); // this triggers the main window to show the conffile handler window
                     break;
@@ -151,7 +151,7 @@ void AptManager::handleUpdateProcessBuffer()
             }
             aptProcess->readLine(lineBuf, 2048);
             QString releaseCode = QString(lineBuf);
-	    releaseCode = releaseCode.left(releaseCode.count() - 2);
+        releaseCode = releaseCode.left(releaseCode.length() - 2);
             emit newRelease(releaseCode);
         }
 
@@ -246,7 +246,7 @@ QList<QStringList> AptManager::getUpdateInfo()
                  * spaces, we know we're no longer reading a package list.
                  */
 
-                if (stdoutLine.count() < 3 || stdoutLine.left(2) != "  ") {
+                if (stdoutLine.length() < 3 || stdoutLine.left(2) != "  ") {
                     gettingInstallPackages = false;
                     gettingUpgradePackages = false;
                     gettingUninstallPackages = false;
@@ -317,7 +317,7 @@ QStringList AptManager::getSecurityUpdateList()
     QString distroLine;
     while (distroFinder.readLineInto(&distroLine)) {
         // The line has to be at least 18 characters long - 16 for the string "DISTRIB_CODENAME", one for the = sign, and one for a codename with a length of at least one.
-        if (distroLine.count() >= 18 && distroLine.left(16) == "DISTRIB_CODENAME") {
+        if (distroLine.length() >= 18 && distroLine.left(16) == "DISTRIB_CODENAME") {
             QStringList distroParts = distroLine.split('=');
             if (distroParts.count() >= 2) {
                 distroName = distroParts[1];
